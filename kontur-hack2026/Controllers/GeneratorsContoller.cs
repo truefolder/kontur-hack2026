@@ -13,19 +13,16 @@ namespace kontur_hack2026.Controllers;
 [Route("generators")]
 public class GeneratorsContoller(IGeneratorService generatorService, IGeneratorRepository generatorRepository)
 {
-    
-
-
     [HttpPost]
     public ActionResult<int> CreateGenerator([FromBody] JsonSchemaNode node)
     {
-        return generatorRepository.Add(generatorService, node);
+        return generatorRepository.Add(node);
     }
 
     [HttpGet("{id}/generate")]
     public ActionResult<ExpandoObject> GenerateJson(int id)
     {
         var generator = generatorRepository.Get(id);
-        return generator.generatorService.GenerateFromSchema(generator.node);
+        return generatorService.GenerateFromSchema(generator.node);
     }
 }

@@ -8,5 +8,4 @@ namespace kontur_hack2026.Models;
 public class Generator(IGeneratorService generatorService, JsonSchemaNode node)
 {
     public JsonSchemaNode node { get; set; } = node;
-    public IGeneratorService generatorService { get; set; } = generatorService;
 }

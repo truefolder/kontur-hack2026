@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace kontur_hack2026.Data;
 
-public class InMemoryGeneratorRepository() : IGeneratorRepository
+public class InMemoryGeneratorRepository(IGeneratorService generatorService) : IGeneratorRepository
 {
-    private Dictionary<int, Generator> generators = new Dictionary<int, Generator>();
+    private Dictionary<int, Generator> generators = new();
     private int _idCnt = 0;
 
-    public int Add(IGeneratorService generatorService, JsonSchemaNode node)
+    public int Add(JsonSchemaNode node)
     {
         _idCnt++;
         generators.Add(_idCnt, new Generator(generatorService,node));

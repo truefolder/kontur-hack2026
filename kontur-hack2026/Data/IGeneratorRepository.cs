@@ -7,6 +7,6 @@ namespace kontur_hack2026.Data;
 
 public interface IGeneratorRepository
 {
-    public int Add(IGeneratorService generatorService, JsonSchemaNode node);
+    public int Add(JsonSchemaNode node);
     public Generator Get(int id);
 }
