@@ -8,7 +8,7 @@ public class GeneratorService : IGeneratorService
 {
     private Random _rnd;
 
-    private Dictionary<string, ITypeGenerator> _generators = new();
+    private Dictionary<string, ITypeGenerator> _generators = new(StringComparer.OrdinalIgnoreCase);
     private Dictionary<string, Func<string>> _fakerDict = new();
 
     public GeneratorService()
@@ -16,12 +16,12 @@ public class GeneratorService : IGeneratorService
         _rnd = new Random();
         _fakerDict.Add("internet.email", () => $"user{_rnd.Next(9999)}@example.com");
 
-        _generators["string"] = new StringGenerator();
-        _generators["integer"] = new IntGenerator();
-        _generators["float"] = new FloatGenerator();
-        _generators["boolean"] = new BoolGenerator();
-        _generators["datetime"] = new DateTimeGenerator();
-        _generators["object"] = new ObjectGenerator(this);
+        _generators[nameof(SupportedTypes.String)] = new StringGenerator();
+        _generators[nameof(SupportedTypes.Integer)] = new IntGenerator();
+        _generators[nameof(SupportedTypes.Float)] = new FloatGenerator();
+        _generators[nameof(SupportedTypes.Boolean)] = new BoolGenerator();
+        _generators[nameof(SupportedTypes.DateTime)] = new DateTimeGenerator();
+        _generators[nameof(SupportedTypes.Object)] = new ObjectGenerator(this);
     }
     
     public dynamic GenerateFromSchema(JsonSchemaNode schema)
