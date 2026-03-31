@@ -5,26 +5,26 @@ namespace kontur_hack2026.Data.Repositories;
 
 public abstract class Repository<TEntity> where TEntity: Entity
 {
-    private readonly ApplicationContext applicationContext;
+    private readonly AppDbContext _appDbContext;
 
-    public Repository(ApplicationContext applicationContext)
+    public Repository(AppDbContext appDbContext)
     {
-        this.applicationContext = applicationContext;
+        this._appDbContext = appDbContext;
     }
     
     public Guid Save(TEntity entity)
     {
         if (Get().Any(x => x.Id == entity.Id))
-            applicationContext.Update(entity);
+            _appDbContext.Update(entity);
         else
-            applicationContext.Add(entity);
+            _appDbContext.Add(entity);
         
-        applicationContext.SaveChanges();
+        _appDbContext.SaveChanges();
         return entity.Id;
     }
 
     public IQueryable<TEntity> Get()
     {
-        return applicationContext.Set<TEntity>().AsNoTracking();
+        return _appDbContext.Set<TEntity>().AsNoTracking();
     }
 }

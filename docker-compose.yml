@@ -5,19 +5,19 @@ services:
     image: postgres:15-alpine
     container_name: postgres
     restart: unless-stopped
-    ports:
-      - "5431:5432"
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_DB: application
+    ports:
+      - "5431:5432"
     command: >
       postgres
       -c log_connections=on
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test: ["CMD-SHELL", "pg_isready -U admin -d admin"]
       interval: 15s
       timeout: 5s
       retries: 5
@@ -29,10 +29,6 @@ services:
       context: .
       dockerfile: ./aspnet_docker/Dockerfile
     container_name: aspnet
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
     restart: unless-stopped
     expose:
       - "8080"

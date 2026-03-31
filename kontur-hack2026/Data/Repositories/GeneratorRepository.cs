@@ -4,7 +4,7 @@ namespace kontur_hack2026.Data.Repositories;
 
 public class GeneratorRepository: Repository<GeneratorEntity>
 {
-    public GeneratorRepository(ApplicationContext applicationContext) : base(applicationContext)
+    public GeneratorRepository(AppDbContext appDbContext) : base(appDbContext)
     {
     }
     public GeneratorEntity? GetById(Guid Id)
