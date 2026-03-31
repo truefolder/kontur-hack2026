@@ -1,4 +1,4 @@
-﻿namespace kontur_hack2026.Data.Entitties;
+﻿namespace kontur_hack2026.Data.Entities;
 
 public class Entity
 {

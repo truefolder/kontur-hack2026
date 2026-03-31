@@ -1,4 +1,4 @@
-﻿using kontur_hack2026.Data.Entitties;
+﻿using kontur_hack2026.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace kontur_hack2026.Data;
