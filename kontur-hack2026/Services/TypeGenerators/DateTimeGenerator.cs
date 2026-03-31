@@ -2,9 +2,9 @@
 
 namespace kontur_hack2026.Services.TypeGenerators;
 
-public class DateTimeGenerator : ITypeGenerator<DateTime>
+public class DateTimeGenerator : TypeGeneratorBase<DateTime>
 {
-    public DateTime Generate(JsonSchemaNode node)
+    public override DateTime Generate(JsonSchemaNode node)
     {
         var random = new Random();
         
@@ -12,6 +12,4 @@ public class DateTimeGenerator : ITypeGenerator<DateTime>
         var range = (DateTime.Today - start).Days;           
         return start.AddDays(random.Next(range));
     }
-    
-    object? ITypeGenerator.Generate(JsonSchemaNode node) => Generate(node);
 }

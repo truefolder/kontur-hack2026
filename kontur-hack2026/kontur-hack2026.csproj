@@ -19,6 +19,7 @@
 
     <ItemGroup>
       <Folder Include="Data\Enitites\" />
+      <Folder Include="DTOs\" />
     </ItemGroup>
 
 </Project>

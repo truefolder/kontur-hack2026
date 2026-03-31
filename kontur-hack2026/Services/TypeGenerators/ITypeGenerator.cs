@@ -4,10 +4,11 @@ namespace kontur_hack2026.Services.TypeGenerators;
 
 public interface ITypeGenerator<out T> : ITypeGenerator
 {
-    new T Generate(JsonSchemaNode node);
+    public new T Generate(JsonSchemaNode node);
 }
 
 public interface ITypeGenerator
 {
-    object? Generate(JsonSchemaNode node);
+    public object? Generate(JsonSchemaNode node);
+    public Type GeneratedType { get; }
 }

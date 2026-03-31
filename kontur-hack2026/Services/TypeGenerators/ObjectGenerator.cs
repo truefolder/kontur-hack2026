@@ -2,12 +2,10 @@
 
 namespace kontur_hack2026.Services.TypeGenerators;
 
-public class ObjectGenerator(IGeneratorService generatorService) : ITypeGenerator<object>
+public class ObjectGenerator(IGeneratorService generatorService) : TypeGeneratorBase<object>
 {
-    public object Generate(JsonSchemaNode node)
+    public override object Generate(JsonSchemaNode node)
     {
         return generatorService.BuildObject(node.Properties);
     }
-
-    object? ITypeGenerator.Generate(JsonSchemaNode node) => Generate(node);
 }
