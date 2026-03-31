@@ -1,5 +1,6 @@
 ﻿using System.Dynamic;
 using kontur_hack2026.Models;
+using kontur_hack2026.Services.Fakers;
 using kontur_hack2026.Services.TypeGenerators;
 
 namespace kontur_hack2026.Services;
@@ -10,9 +11,11 @@ public class GeneratorService : IGeneratorService
 
     private Dictionary<string, ITypeGenerator> _generators = new(StringComparer.OrdinalIgnoreCase);
     private Dictionary<string, Func<string>> _fakerDict = new();
+    private FakerRegistry _fakerRegistry;
 
-    public GeneratorService()
+    public GeneratorService(FakerRegistry fakerRegistry)
     {
+        _fakerRegistry = fakerRegistry;
         _rnd = new Random();
         _fakerDict.Add("internet.email", () => $"user{_rnd.Next(9999)}@example.com");
 
@@ -46,8 +49,8 @@ public class GeneratorService : IGeneratorService
     {
         if (node.Faker is not null)
         {
-            if (_fakerDict.TryGetValue(node.Faker, out var faker))
-                return faker();
+            if (_fakerRegistry.TryGenerate(node.Faker, out var faker))
+                return faker;
         }
         return _generators[node.Type].Generate(node);
     }
