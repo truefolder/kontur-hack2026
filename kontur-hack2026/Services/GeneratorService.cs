@@ -1,4 +1,7 @@
 ﻿using System.Dynamic;
+using kontur_hack2026.Data;
+using kontur_hack2026.Data.Repositories;
+using kontur_hack2026.Data.Entitties;
 using kontur_hack2026.Models;
 using kontur_hack2026.Services.Fakers;
 using kontur_hack2026.Services.TypeGenerators;
@@ -12,8 +15,9 @@ public class GeneratorService : IGeneratorService
     private Dictionary<string, ITypeGenerator> _primitiveGenerators = new(StringComparer.OrdinalIgnoreCase);
     private FakerRegistry _fakerRegistry;
     private TypeGeneratorFactory _typeGeneratorFactory;
+    private GeneratorRepository generatorRepository;
 
-    public GeneratorService(FakerRegistry fakerRegistry)
+    public GeneratorService(FakerRegistry fakerRegistry, GeneratorRepository generatorRepository)
     {
         _fakerRegistry = fakerRegistry;
         _rnd = new Random();
@@ -26,8 +30,14 @@ public class GeneratorService : IGeneratorService
         _primitiveGenerators[nameof(SupportedTypes.Object)] = new ObjectGenerator(this);
         
         _typeGeneratorFactory = new(_primitiveGenerators);
+        this.generatorRepository = generatorRepository;
     }
-    
+
+    public GeneratorService()
+    {
+        throw new NotImplementedException();
+    }
+
     public dynamic GenerateFromSchema(JsonSchemaNode schema)
     {
         if (schema.Type != "object")
@@ -57,4 +67,14 @@ public class GeneratorService : IGeneratorService
         var generator = _typeGeneratorFactory.Create(node);
         return generator.Generate(node);
     }
+
+    public Guid Save(JsonSchemaNode node)
+    {
+        return generatorRepository.Save(new GeneratorEntity { node= node});
+    }
+    public Generator GetById(Guid id)
+    {
+        return new Generator(generatorRepository.GetById(id).node);
+    }
+
 }

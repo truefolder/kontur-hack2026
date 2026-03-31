@@ -15,11 +15,11 @@ public class ApplicationContext : DbContext
     {
         var connectionString = new ConnectionString
         {
-            DatabaseName = "team",
-            Host = "localhost",
+            DatabaseName = $"POSTGRES_DB",
+            Host = "postgres",
             Port = "5431",
-            Password = "postgres",
-            UserName = "postgres"
+            Password =  $"POSTGRES_PASSWORD",
+            UserName = $"POSTGRES_USER"
         };
         optionsBuilder.UseNpgsql(connectionString.Build());
     }

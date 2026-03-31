@@ -12,7 +12,7 @@ public abstract class Repository<TEntity> where TEntity: Entity
         this.applicationContext = applicationContext;
     }
     
-    public void Save(TEntity entity)
+    public Guid Save(TEntity entity)
     {
         if (Get().Any(x => x.Id == entity.Id))
             applicationContext.Update(entity);
@@ -20,6 +20,7 @@ public abstract class Repository<TEntity> where TEntity: Entity
             applicationContext.Add(entity);
         
         applicationContext.SaveChanges();
+        return entity.Id;
     }
 
     public IQueryable<TEntity> Get()

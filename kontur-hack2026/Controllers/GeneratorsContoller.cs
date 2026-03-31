@@ -11,18 +11,37 @@ namespace kontur_hack2026.Controllers;
 
 [ApiController]
 [Route("generators")]
-public class GeneratorsContoller(IGeneratorService generatorService, IGeneratorRepository generatorRepository)
+public class GeneratorsContoller(IGeneratorService generatorService)
 {
     [HttpPost]
-    public ActionResult<int> CreateGenerator([FromBody] JsonSchemaNode node)
+    public ActionResult<Guid> CreateGenerator([FromBody] JsonSchemaNode node)
     {
-        return generatorRepository.Add(node);
+        return generatorService.Save(node);
+    }
+
+    [HttpGet]
+    public ActionResult<ExpandoObject> GetGenerators()
+    {
+        throw new NotImplementedException();
+    }
+
+    [HttpGet("{id}")]
+    public ActionResult<JsonSchemaNode> GetGenerator(Guid id)
+    {
+        var generator = generatorService.GetById(id);
+        return generator.node;
     }
 
     [HttpGet("{id}/generate")]
-    public ActionResult<ExpandoObject> GenerateJson(int id)
+    public ActionResult<ExpandoObject> GenerateJson(Guid id)
     {
-        var generator = generatorRepository.Get(id);
+        var generator = generatorService.GetById(id);
         return generatorService.GenerateFromSchema(generator.node);
+    }
+
+    [HttpPut("{id}")]
+    public IActionResult UpdateGenerator(int id, [FromBody] JsonSchemaNode node)
+    {
+        throw new NotImplementedException();
     }
 }

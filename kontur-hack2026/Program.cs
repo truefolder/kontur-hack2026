@@ -16,7 +16,6 @@ builder.Services.AddTransient<FakerRegistry>();
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddCors();
-builder.Services.AddSingleton<IGeneratorRepository, InMemoryGeneratorRepository>();
 
 var app = builder.Build();
 
