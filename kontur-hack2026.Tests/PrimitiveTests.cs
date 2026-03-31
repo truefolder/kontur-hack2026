@@ -1,5 +1,8 @@
+using kontur_hack2026.Data;
+using kontur_hack2026.Data.Repositories;
 using kontur_hack2026.Models;
 using kontur_hack2026.Services;
+using kontur_hack2026.Services.Fakers;
 
 namespace kontur_hack2026.Tests;
 
@@ -10,7 +13,8 @@ public class PrimitiveTests
     
     public PrimitiveTests()
     {
-        generator = new GeneratorService();
+        var fakerRegistry = new FakerRegistry();
+        generator = new GeneratorService(fakerRegistry);
     }
     
     [TestCase(nameof(SupportedTypes.Integer))]
@@ -63,7 +67,7 @@ public class PrimitiveTests
             }
         };
         
-        Assert.Throws<KeyNotFoundException>(() => { generator.GenerateFromSchema(schema); });
+        Assert.Throws<NotSupportedException>(() => { generator.GenerateFromSchema(schema); });
     }
     
     [Test]

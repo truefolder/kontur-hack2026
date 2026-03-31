@@ -1,5 +1,7 @@
-﻿using kontur_hack2026.Models;
+﻿using kontur_hack2026.Data.Repositories;
+using kontur_hack2026.Models;
 using kontur_hack2026.Services;
+using kontur_hack2026.Services.Fakers;
 
 namespace kontur_hack2026.Tests;
 
@@ -10,7 +12,8 @@ public class NestedObjectTests
     
     public NestedObjectTests()
     {
-        generator = new GeneratorService();
+        var fakerRegistry = new FakerRegistry();
+        generator = new GeneratorService(fakerRegistry);
     }
 
     [Test]

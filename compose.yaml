@@ -1,0 +1,7 @@
+﻿services:
+  kontur-hack2026:
+    image: kontur-hack2026
+    build:
+      context: .
+      dockerfile: kontur-hack2026/Dockerfile
+

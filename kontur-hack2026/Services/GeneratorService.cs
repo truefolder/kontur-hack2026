@@ -32,15 +32,26 @@ public class GeneratorService : IGeneratorService
         _typeGeneratorFactory = new(_primitiveGenerators);
         this.generatorRepository = generatorRepository;
     }
-
-    public GeneratorService()
+    
+    public GeneratorService(FakerRegistry fakerRegistry)
     {
-        throw new NotImplementedException();
+        _fakerRegistry = fakerRegistry;
+        _rnd = new Random();
+
+        _primitiveGenerators[nameof(SupportedTypes.String)] = new StringGenerator();
+        _primitiveGenerators[nameof(SupportedTypes.Integer)] = new IntGenerator();
+        _primitiveGenerators[nameof(SupportedTypes.Float)] = new FloatGenerator();
+        _primitiveGenerators[nameof(SupportedTypes.Boolean)] = new BoolGenerator();
+        _primitiveGenerators[nameof(SupportedTypes.DateTime)] = new DateTimeGenerator();
+        _primitiveGenerators[nameof(SupportedTypes.Object)] = new ObjectGenerator(this);
+        
+        _typeGeneratorFactory = new(_primitiveGenerators);
     }
+    
 
     public dynamic GenerateFromSchema(JsonSchemaNode schema)
     {
-        if (schema.Type != "object")
+        if (schema.Type != "object" ||  schema.Properties is null)
             throw new ArgumentException();
 
         return BuildObject(schema.Properties);
