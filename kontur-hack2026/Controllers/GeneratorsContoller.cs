@@ -14,8 +14,5 @@ public class GeneratorsContoller(IGeneratorService generatorService)
     public ActionResult<ExpandoObject> GenerateJson([FromBody] JsonSchemaNode node)
     {
         return generatorService.GenerateFromSchema(node);
-    } 
-        
-        
-
+    }
 }
