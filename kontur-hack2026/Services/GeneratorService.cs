@@ -10,7 +10,6 @@ public class GeneratorService : IGeneratorService
     private Random _rnd;
 
     private Dictionary<string, ITypeGenerator> _primitiveGenerators = new(StringComparer.OrdinalIgnoreCase);
-    private Dictionary<string, Func<string>> _fakerDict = new();
     private FakerRegistry _fakerRegistry;
     private TypeGeneratorFactory _typeGeneratorFactory;
 
@@ -18,7 +17,6 @@ public class GeneratorService : IGeneratorService
     {
         _fakerRegistry = fakerRegistry;
         _rnd = new Random();
-        _fakerDict.Add("internet.email", () => $"user{_rnd.Next(9999)}@example.com");
 
         _primitiveGenerators[nameof(SupportedTypes.String)] = new StringGenerator();
         _primitiveGenerators[nameof(SupportedTypes.Integer)] = new IntGenerator();
