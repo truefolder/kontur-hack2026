@@ -1,6 +1,7 @@
 using kontur_hack2026.Services;
 using kontur_hack2026.Services.Fakers;
 using kontur_hack2026.Data;
+using kontur_hack2026.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddTransient<GeneratorRepository>();
+builder.Services.AddTransient<ApplicationContext>();
 builder.Services.AddTransient<IGeneratorService, GeneratorService>();
 builder.Services.AddTransient<FakerRegistry>();
 builder.Services.AddControllers();
