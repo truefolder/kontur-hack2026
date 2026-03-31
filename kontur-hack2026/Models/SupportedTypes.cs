@@ -2,9 +2,8 @@
 
 public enum SupportedTypes
 {
-    Int,
+    Integer,
     Float,
-    Double,
     String,
     Boolean,
     DateTime,

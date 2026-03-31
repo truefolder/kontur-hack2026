@@ -1,5 +1,6 @@
 ﻿using System.Dynamic;
 using kontur_hack2026.Models;
+using kontur_hack2026.Services.TypeGenerators;
 
 namespace kontur_hack2026.Services;
 
@@ -7,11 +8,20 @@ public class GeneratorService : IGeneratorService
 {
     private Random _rnd;
 
+    private Dictionary<string, ITypeGenerator> _generators = new();
     private Dictionary<string, Func<string>> _fakerDict = new();
+
     public GeneratorService()
     {
         _rnd = new Random();
         _fakerDict.Add("internet.email", () => $"user{_rnd.Next(9999)}@example.com");
+
+        _generators["string"] = new StringGenerator();
+        _generators["integer"] = new IntGenerator();
+        _generators["float"] = new FloatGenerator();
+        _generators["boolean"] = new BoolGenerator();
+        _generators["datetime"] = new DateTimeGenerator();
+        _generators["object"] = new ObjectGenerator(this);
     }
     
     public dynamic GenerateFromSchema(JsonSchemaNode schema)
@@ -22,7 +32,7 @@ public class GeneratorService : IGeneratorService
         return BuildObject(schema.Properties);
     }
 
-    private ExpandoObject BuildObject(Dictionary<string, JsonSchemaNode> properties)
+    public ExpandoObject BuildObject(Dictionary<string, JsonSchemaNode> properties)
     {
         var obj = new ExpandoObject() as IDictionary<string, object?>;
 
@@ -39,13 +49,6 @@ public class GeneratorService : IGeneratorService
             if (_fakerDict.TryGetValue(node.Faker, out var faker))
                 return faker();
         }
-        return node.Type switch
-        {
-            "string"  => "hello world",
-            "integer" => _rnd.Next(1, 10000),
-            "number"  => Math.Round(_rnd.NextDouble() * 1000, 2),
-            "boolean" => _rnd.Next(2) == 1,
-            _         => null
-        };
+        return _generators[node.Type].Generate(node);
     }
 }
