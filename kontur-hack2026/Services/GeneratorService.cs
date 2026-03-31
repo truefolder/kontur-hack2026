@@ -9,27 +9,28 @@ public class GeneratorService : IGeneratorService
 {
     private Random _rnd;
 
-    private Dictionary<string, ITypeGenerator> _generators = new(StringComparer.OrdinalIgnoreCase);
-    private Dictionary<string, Func<string>> _fakerDict = new();
+    private Dictionary<string, ITypeGenerator> _primitiveGenerators = new(StringComparer.OrdinalIgnoreCase);
     private FakerRegistry _fakerRegistry;
+    private TypeGeneratorFactory _typeGeneratorFactory;
 
     public GeneratorService(FakerRegistry fakerRegistry)
     {
         _fakerRegistry = fakerRegistry;
         _rnd = new Random();
-        _fakerDict.Add("internet.email", () => $"user{_rnd.Next(9999)}@example.com");
 
-        _generators[nameof(SupportedTypes.String)] = new StringGenerator();
-        _generators[nameof(SupportedTypes.Integer)] = new IntGenerator();
-        _generators[nameof(SupportedTypes.Float)] = new FloatGenerator();
-        _generators[nameof(SupportedTypes.Boolean)] = new BoolGenerator();
-        _generators[nameof(SupportedTypes.DateTime)] = new DateTimeGenerator();
-        _generators[nameof(SupportedTypes.Object)] = new ObjectGenerator(this);
+        _primitiveGenerators[nameof(SupportedTypes.String)] = new StringGenerator();
+        _primitiveGenerators[nameof(SupportedTypes.Integer)] = new IntGenerator();
+        _primitiveGenerators[nameof(SupportedTypes.Float)] = new FloatGenerator();
+        _primitiveGenerators[nameof(SupportedTypes.Boolean)] = new BoolGenerator();
+        _primitiveGenerators[nameof(SupportedTypes.DateTime)] = new DateTimeGenerator();
+        _primitiveGenerators[nameof(SupportedTypes.Object)] = new ObjectGenerator(this);
+        
+        _typeGeneratorFactory = new(_primitiveGenerators);
     }
     
     public dynamic GenerateFromSchema(JsonSchemaNode schema)
     {
-        if (schema.Type != "object" || schema.Properties is null)
+        if (schema.Type != "object")
             throw new ArgumentException();
 
         return BuildObject(schema.Properties);
@@ -52,6 +53,8 @@ public class GeneratorService : IGeneratorService
             if (_fakerRegistry.TryGenerate(node.Faker, out var faker))
                 return faker;
         }
-        return _generators[node.Type].Generate(node);
+
+        var generator = _typeGeneratorFactory.Create(node);
+        return generator.Generate(node);
     }
 }

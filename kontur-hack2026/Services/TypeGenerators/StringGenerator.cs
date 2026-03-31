@@ -3,9 +3,9 @@ using kontur_hack2026.Models;
 
 namespace kontur_hack2026.Services.TypeGenerators;
 
-public class StringGenerator : ITypeGenerator<string>
+public class StringGenerator : TypeGeneratorBase<string>
 {
-    public string Generate(JsonSchemaNode node)
+    public override string Generate(JsonSchemaNode node)
     {
         var random = new Random();
 
@@ -20,6 +20,4 @@ public class StringGenerator : ITypeGenerator<string>
         
         return result.ToString();
     }
-    
-    object? ITypeGenerator.Generate(JsonSchemaNode node) => Generate(node);
 }

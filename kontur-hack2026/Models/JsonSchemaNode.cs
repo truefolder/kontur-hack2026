@@ -10,7 +10,10 @@ public class JsonSchemaNode
 
     [JsonPropertyName("properties")]
     public Dictionary<string, JsonSchemaNode>? Properties { get; set; }
-
+    
+    [JsonPropertyName("items")]
+    public JsonSchemaNode? Items { get; set; }
+    
     [JsonPropertyName("format")]
     public string? Format { get; set; }
     

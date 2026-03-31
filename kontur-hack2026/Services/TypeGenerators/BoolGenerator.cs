@@ -2,14 +2,12 @@
 
 namespace kontur_hack2026.Services.TypeGenerators;
 
-public class BoolGenerator : ITypeGenerator<bool>
+public class BoolGenerator : TypeGeneratorBase<bool>
 {
-    public bool Generate(JsonSchemaNode node)
+    public override bool Generate(JsonSchemaNode node)
     {
         var random = new Random();
         
         return random.NextDouble() >= 0.5;
     }
-
-    object? ITypeGenerator.Generate(JsonSchemaNode node) => Generate(node);
 }

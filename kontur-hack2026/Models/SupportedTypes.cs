@@ -7,7 +7,6 @@ public enum SupportedTypes
     String,
     Boolean,
     DateTime,
-    List,
     Array,
     Dictionary,
     Object
