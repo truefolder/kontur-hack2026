@@ -1,7 +1,7 @@
 ﻿using System.Dynamic;
 using kontur_hack2026.Data;
 using kontur_hack2026.Data.Repositories;
-using kontur_hack2026.Data.Entitties;
+using kontur_hack2026.Data.Entities;
 using kontur_hack2026.Models;
 using kontur_hack2026.Services.Fakers;
 using kontur_hack2026.Services.TypeGenerators;
