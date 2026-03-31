@@ -1,4 +1,5 @@
 using kontur_hack2026.Services;
+using kontur_hack2026.Services.Fakers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IGeneratorService, GeneratorService>();
+builder.Services.AddTransient<FakerRegistry>();
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddCors();
