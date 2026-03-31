@@ -6,9 +6,12 @@ namespace kontur_hack2026.Services;
 public class GeneratorService : IGeneratorService
 {
     private Random _rnd;
+
+    private Dictionary<string, Func<string>> _fakerDict = new();
     public GeneratorService()
     {
         _rnd = new Random();
+        _fakerDict.Add("internet.email", () => $"user{_rnd.Next(9999)}@example.com");
     }
     
     public dynamic GenerateFromSchema(JsonSchemaNode schema)
@@ -31,6 +34,11 @@ public class GeneratorService : IGeneratorService
     
     private object? GenerateValue(JsonSchemaNode node)
     {
+        if (node.Faker is not null)
+        {
+            if (_fakerDict.TryGetValue(node.Faker, out var faker))
+                return faker();
+        }
         return node.Type switch
         {
             "string"  => "hello world",

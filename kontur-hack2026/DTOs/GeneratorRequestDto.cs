@@ -13,4 +13,7 @@ public class GeneratorRequestDto
 
     [JsonPropertyName("format")]
     public string? Format { get; set; }
+    
+    [JsonPropertyName("faker")]
+    public string? Faker { get; set; }
 }
